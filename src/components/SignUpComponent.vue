@@ -72,7 +72,7 @@
 </template>
 
 <script>
-import countries from "@/helpers/countries";
+import countries from "@/data/countries";
 export default {
   name: 'SignUpComponent',
   components: {},

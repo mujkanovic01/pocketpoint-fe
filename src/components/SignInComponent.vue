@@ -13,7 +13,6 @@
 
       <label for="password1" class="block text-900 font-medium mb-2">Password</label>
       <InputText id="password1" type="password" class="w-full mb-3" />
-
       <div class="flex align-items-center justify-content-between mb-6">
         <div class="flex align-items-center">
           <Checkbox id="rememberme1" :binary="true" v-model="checked" class="mr-2"></Checkbox>
