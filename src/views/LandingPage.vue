@@ -54,15 +54,18 @@
             label: 'Home',
             icon: 'pi pi-fw pi-home',
             class: "p-focus",
+            url: '/',
           },
 
           {
             label: 'Tournaments',
-            icon: 'pi pi-fw pi-sitemap'
+            icon: 'pi pi-fw pi-sitemap',
+            url: '/tournaments'
           },
           {
             label: 'Leaderboards',
-            icon: 'pi pi-fw pi-chart-bar'
+            icon: 'pi pi-fw pi-chart-bar',
+            url: '/leaderboard'
           },
           { separator: true },
 
@@ -75,10 +78,12 @@
         this.isSignInVisible  = true;
       },
       openSignupComponent: function () {
-        console.log('ae');
         this.isSignUpVisible  = true;
         this.isSignInVisible = false;
-      }
+      },
+      // openTournaments() {
+      //   this.$router.push('/tournaments')
+      // }
     }
   }
   </script>

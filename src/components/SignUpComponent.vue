@@ -88,7 +88,6 @@ export default {
   },
   methods: {
     handleSignUp() {
-      console.log(this.selectedCountry)
       localStorage.setItem('user', JSON.stringify({
         'firstname': this.firstName,
         'lastname': this.lastName,

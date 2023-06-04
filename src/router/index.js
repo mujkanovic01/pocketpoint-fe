@@ -12,6 +12,15 @@ const routes = [
     path: '/create-tournament',
     component: CreateTournamentPage
   },
+  {
+    path: '/leaderboard',
+    component: () => import('../views/LeaderboardPage.vue')
+  },
+  {
+    path: '/tournaments',
+    component: () => import('../views/TournamentsPage.vue')
+  }
+
 ];
 
 const router = createRouter({

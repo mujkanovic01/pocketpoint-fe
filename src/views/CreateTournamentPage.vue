@@ -138,7 +138,6 @@ export default {
       this.isSignInVisible  = true;
     },
     openSignupComponent: function () {
-      console.log('ae');
       this.isSignUpVisible  = true;
       this.isSignInVisible = false;
     }

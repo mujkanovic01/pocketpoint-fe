@@ -18,7 +18,10 @@ import Divider from "primevue/divider";
 import InputNumber from "primevue/inputnumber";
 import DataTable from "primevue/datatable";
 import Column from 'primevue/column';
+import DataView from "primevue/dataview";
+import Knob from "primevue/knob";
 import Avatar from "primevue/avatar";
+import AvatarGroup from "primevue/avatargroup";
 
 const app = createApp(App);
 app.use(PrimeVue, { ripple: true });
@@ -31,10 +34,13 @@ app.component('Menubar', Menubar);
 app.component('Dialog', Dialog);
 app.component('Dropdown', Dropdown);
 app.component('Calendar', Calendar);
+app.component('DataView', DataView)
+app.component("Knob", Knob);
 app.component('Divider', Divider);
 app.component('InputNumber', InputNumber);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Avatar', Avatar);
+app.component('AvatarGroup', AvatarGroup);
 
 app.mount('#app');
