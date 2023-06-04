@@ -86,12 +86,12 @@ export default {
         {
           label: 'Home',
           icon: 'pi pi-fw pi-home',
-          class: "p-focus",
           url: '/',
         },
         {
           label: 'Tournaments',
           icon: 'pi pi-fw pi-sitemap',
+          class: "p-focus",
           url: '/tournaments'
         },
         {

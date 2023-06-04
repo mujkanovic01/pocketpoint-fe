@@ -69,7 +69,6 @@ export default {
         {
           label: 'Home',
           icon: 'pi pi-fw pi-home',
-          class: "p-focus",
           url: '/',
         },
         {
@@ -80,6 +79,7 @@ export default {
         {
           label: 'Leaderboards',
           icon: 'pi pi-fw pi-chart-bar',
+          class: "p-focus",
           url: '/leaderboard'
         },
         {separator: true},
