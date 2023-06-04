@@ -20,8 +20,7 @@ const routes = [
   {
     path: '/tournaments',
     component: () => import('../views/TournamentsPage.vue')
-  }
-
+  },
   {
     path: '/tournament',
     component: TournamentPage
