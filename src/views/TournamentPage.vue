@@ -11,105 +11,219 @@
       </Menubar>
     </div>
     <div class="surface-section w-full p-6">
-      <div class="font-medium text-3xl text-900 mb-3">Host a tournament</div>
-      <div class="text-500 mb-5">Please provide some basic information about your tournament</div>
+      <div class="font-medium text-3xl text-900 mb-3">{{ title.toUpperCase() }}</div>
+      <div class="text-500 mb-5">{{ datetime }} (local time)</div>
       <div class="flex flex-column list-none p-0 m-0">
-        <Divider class="flex col-12"/>
-        <div class="flex col-12 gap-2">
-          <div class="flex col-4 align-items-center justify-content-between py-3 px-2 surface-border">
-            <div class="flex text-500 font-medium w-6">Tournament Title</div>
-            <div class="col-1"/>
-            <InputText v-model="title" class="flex w-full"></InputText>
-          </div>
-          <div class="flex col-2"/>
-          <div class="flex col-4 align-items-center align-content-end justify-content-between py-3 px-2 surface-border">
-            <div class="text-500 w-6 font-medium">Date & time</div>
-            <div class="col-1"/>
-            <Calendar :options="{'readonlyInput': false}" class="w-full" showIcon v-model="datetime" :manualInput="false" showTime hourFormat="24" />
-          </div>
+        <div class="flex flex-column col-12 gap-4 p-0">
+          <div class="flex text-800 font-medium w-6 text-xl">Organizer: {{clubName}}</div>
+          <div class="flex text-800 font-medium w-6 text-xl">Discipline: {{discipline}}</div>
+          <div class="flex text-800 font-medium w-6 text-xl">Num. of players: {{players.length}}/{{numberOfPlayers}}</div>
+          <div class="flex text-800 font-medium w-6 text-xl">Race to: {{raceTo}}</div>
         </div>
-        <div class="flex col-12 gap-2">
-          <div class="flex col-4 align-items-center justify-content-between py-3 px-2 surface-border">
-            <div class="flex text-500 font-medium w-6">Discipline</div>
-            <div class="col-1"/>
-            <Dropdown v-model="discipline" :options="disciplinesOptions" optionLabel="name" placeholder="Select a discipline" class="w-full" />
-          </div>
-          <div class="flex col-2"/>
-          <div class="flex col-4 align-items-center justify-content-between py-3 px-2 surface-border">
-            <div class="flex text-500 font-medium w-6">Number of players</div>
-            <div class="col-1"/>
-            <Dropdown v-model="playerNum" :options="playerNumOptions" optionLabel="name" placeholder="Select a number" class="w-full" />
-          </div>
-        </div>
-        <div class="flex col-12 gap-2">
-          <div class="flex col-4 align-items-center justify-content-between py-3 px-2 surface-border">
-            <div class="flex text-500 font-medium w-6">Race to</div>
-            <div class="col-1"/>
-            <InputNumber class="w-full" v-model="raceTo" :useGrouping="false" mode="decimal" showButtons :min="5" :max="100" />
-          </div>
-          <div class="flex col-2"/>
-          <div class="flex col-4 align-items-center align-content-end justify-content-between py-3 px-2 surface-border">
-            <div class="text-500 w-6 font-medium">Club name</div>
-            <div class="col-1"/>
-            <InputText class="w-full" v-model="clubName"></InputText>
-          </div>
-        </div>
-        <Divider class="flex col-12"/>
-        <div class="font-medium text-3xl text-900 mb-3">Add players</div>
-        <div class="text-500 mb-5">Please add up to 32 players who will participate in the tournament</div>
+        <Divider class="flex col-12 mb-6"/>
+        <div class="font-medium text-4xl text-900 mb-6">Matches</div>
+
+        <div class="font-medium text-3xl text-900 mb-4">Round 1</div>
         <div class="flex justify-content-center">
-          <Toast />
-          <ConfirmPopup></ConfirmPopup>
-          <DataTable :value="players" class="w-8">
-            <template #header>
-              <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                <span class="text-xl text-900 font-bold">Players</span>
-                <Button icon="pi pi-plus" rounded outlined raised size="small" @click="isAddPlayerDialogOpen = true"/>
+          <DataView :value="Object.values(matches).slice(0, 16)">
+            <template #list="slotProps">
+              <div class="flex col-12 w-full">
+                <div class="flex flex-row align-items-center justify-content-between p-4 gap-4 w-full col-12">
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar :label="slotProps.data.player1.name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">{{slotProps.data.player1.name}}</p>
+                  </div>
+                  <div class="hidden md:flex flex-column">
+                    <p class="text-xl p-0 m-1">{{ slotProps.data.player1.name }}</p>
+                    <p class="text-xl p-0 m-1">Age: {{ slotProps.data.player1.age }}</p>
+                    <p class="text-xl p-0 m-1">Win percentage: {{ slotProps.data.player1.winPercentage }}%</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag :code="slotProps.data.player1.code" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="flex gap-4 px-4">
+                    <p class="text-4xl">{{ slotProps.data.scoreLeft }}</p>
+                    <p class="text-4xl">:</p>
+                    <p class="text-4xl">{{ slotProps.data.scoreRight }}</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag :code="slotProps.data.player2.code" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="hidden md:flex flex-column justify-content-end">
+                    <p class="text-xl p-0 m-1">{{ slotProps.data.player2.name }}</p>
+                    <p class="text-xl p-0 m-1">Age: {{ slotProps.data.player2.age }}</p>
+                    <p class="text-xl p-0 m-1">Win percentage: {{ slotProps.data.player2.winPercentage }}%</p>
+                  </div>
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar :label="slotProps.data.player2.name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">{{slotProps.data.player2.name}}</p>
+                  </div>
+                </div>
               </div>
             </template>
-            <Column field="rank" header="No.">
-              <template #body="slotProps">
-                <div class='text-l'>#{{ slotProps.index + 1 }}</div>
-              </template>
-            </Column>
-            <Column field="name" header="Player">
-              <template #body="slotProps">
-                <Avatar :label="slotProps.data.name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2" shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-                {{ slotProps.data.name }}
-              </template>
-            </Column>
-            <Column field="code" header="Nationality">
-              <template #body="slotProps">
-                <Flag :code="slotProps.data.code"></Flag>
-              </template>
-            </Column>
-            <Column field="age" header="Age"></Column>
-            <Column field="icon" header="">
-              <template #body="slotProps">
-                <i class="pi pi-times" style="color: #DC143C" @click="deletePlayer($event, slotProps.data)"></i>
-              </template>
-            </Column>
-            <!--          <Column field="quantity" header="Quantity"></Column>-->
-          </DataTable>
+          </DataView>
         </div>
-        <div class="flex col-12 justify-content-center mt-4">
-          <Button label="Create Tournament" class="w-2" @click="createTournament()"></Button>
+        <div class="font-medium text-3xl text-900 mt-6 mb-4">Round 2</div>
+        <div class="flex justify-content-center">
+          <DataView :value="Object.values(matches).slice(16, 24)">
+            <template #list="slotProps">
+              <div class="flex col-12 w-full">
+                <div class="flex flex-row align-items-center justify-content-between p-4 gap-4 w-full col-12">
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar :label="slotProps.data.player1.name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">{{slotProps.data.player1.name}}</p>
+                  </div>
+                  <div class="hidden md:flex flex-column">
+                    <p class="text-xl p-0 m-1">{{ slotProps.data.player1.name }}</p>
+                    <p class="text-xl p-0 m-1">Age: {{ slotProps.data.player1.age }}</p>
+                    <p class="text-xl p-0 m-1">Win percentage: {{ slotProps.data.player1.winPercentage }}%</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag :code="slotProps.data.player1.code" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="flex gap-4 px-4">
+                    <p class="text-4xl">{{ slotProps.data.scoreLeft }}</p>
+                    <p class="text-4xl">:</p>
+                    <p class="text-4xl">{{ slotProps.data.scoreRight }}</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag :code="slotProps.data.player2.code" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="hidden md:flex flex-column justify-content-end">
+                    <p class="text-xl p-0 m-1">{{ slotProps.data.player2.name }}</p>
+                    <p class="text-xl p-0 m-1">Age: {{ slotProps.data.player2.age }}</p>
+                    <p class="text-xl p-0 m-1">Win percentage: {{ slotProps.data.player2.winPercentage }}%</p>
+                  </div>
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar :label="slotProps.data.player2.name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">{{slotProps.data.player2.name}}</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </DataView>
+        </div>
+
+        <div class="font-medium text-3xl text-900 mt-6 mb-4">Quarter finals</div>
+        <div class="flex justify-content-center">
+          <DataView :value="Object.values(matches).slice(0, 4)">
+            <template #list="slotProps">
+              <div class="flex col-12 w-full">
+                <div class="flex flex-row align-items-center justify-content-between p-4 gap-4 w-full col-12">
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                  <div class="hidden md:flex flex-column">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="flex gap-4 px-4">
+                    <p class="text-4xl">N/A</p>
+                    <p class="text-4xl">:</p>
+                    <p class="text-4xl">N/A</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="hidden md:flex flex-column justify-content-end">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </DataView>
+        </div>
+
+        <div class="font-medium text-3xl text-900 mt-6 mb-4">Semi finals</div>
+        <div class="flex justify-content-center">
+          <DataView :value="Object.values(matches).slice(0, 2)" class="w-full">
+            <template #list="slotProps">
+              <div class="flex col-12 w-full">
+                <div class="flex flex-row align-items-center justify-content-between p-4 gap-4 w-full col-12">
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                  <div class="hidden md:flex flex-column">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="flex gap-4 px-4">
+                    <p class="text-4xl">N/A</p>
+                    <p class="text-4xl">:</p>
+                    <p class="text-4xl">N/A</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="hidden md:flex flex-column justify-content-end">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </DataView>
+        </div>
+
+        <div class="font-medium text-3xl text-900 mt-6 mb-4">Finals</div>
+        <div class="flex justify-content-center w-full">
+          <DataView :value="Object.values(matches).slice(0, 1)" class="w-full">
+            <template #list="slotProps">
+              <div class="flex col-12 w-full">
+                <div class="flex flex-row align-items-center justify-content-between p-4 gap-4 w-full col-12">
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                  <div class="hidden md:flex flex-column">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="flex gap-4 px-4">
+                    <p class="text-4xl">N/A</p>
+                    <p class="text-4xl">:</p>
+                    <p class="text-4xl">N/A</p>
+                  </div>
+                  <div class="hidden md:block">
+                    <Flag code="TBD" styleProp='width: 32px'></Flag>
+                  </div>
+                  <div class="hidden md:flex flex-column justify-content-end">
+                    <p class="text-xl p-0 m-1">TBD</p>
+                  </div>
+                  <div class="flex flex-column justify-content-center align-items-center">
+                    <Avatar label="?" class="mr-2" shape="circle" size="xlarge" style="background-color:#2196F3; color: #ffffff"/>
+                    <p class="block md:hidden">TBD</p>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </DataView>
         </div>
       </div>
     </div>
-    <Dialog v-model:visible="isAddPlayerDialogOpen" modal header="Add player">
-      <div class="flex justify-content-start flex-nowrap">
-        <AutoComplete placeholder="Enter player's full name" v-model="playerToAdd" optionLabel="name" :suggestions="suggestedPlayers" @complete="search" forceSelection />
-        <div class="flex col-1"/>
-        <Button icon="pi pi-plus" @click="addPlayer()"/>
-      </div>
-    </Dialog>
   </div>
 </template>
 
 <script>
 import players from "@/data/players";
 import Flag from "@/components/Flag.vue";
+import matches from "@/data/tournament";
+
 export default {
   name: 'TournamentPage',
   components: {
@@ -119,13 +233,22 @@ export default {
     const tournamentId = this.$route.query.id;
     const tournaments = JSON.parse(localStorage.getItem('tournaments'));
     const tournamentData = tournaments[tournamentId];
-    console.log(tournamentData)
+
+    // Split datetime
+    const dateTimeString = tournamentData.datetime;
+    const dateTimeParts = dateTimeString.split("T");
+    const date = dateTimeParts[0];
+    const time = dateTimeParts[1].slice(0, -5);
+    const [year, month, day] = date.split("-");
+    const [hours, minutes] = time.split(":");
+    const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}`;
     return {
       title: tournamentData.title,
-      datetime: tournamentData.datetime,
+      datetime: formattedDateTime,
       discipline: tournamentData.discipline.name,
       raceTo: tournamentData.raceTo,
       clubName: tournamentData.clubName,
+      numberOfPlayers: tournamentData.numberOfPlayers.name,
       players: tournamentData.players,
       menubarItems: [
         { separator: true },
@@ -146,51 +269,14 @@ export default {
           url: '/leaderboard',
         },
         { separator: true },
-      ]
+      ],
+      matches: matches
     }
   },
   methods: {
     openSigninComponent: function () {
       this.isSignUpVisible = false;
       this.isSignInVisible  = true;
-    },
-    openSignupComponent: function () {
-      console.log('ae');
-      this.isSignUpVisible  = true;
-      this.isSignInVisible = false;
-    },
-    deletePlayer: function (event, row) {
-      this.$confirm.require({
-        target: event.currentTarget,
-        message: 'Do you want to delete this record?',
-        icon: 'pi pi-info-circle',
-        acceptClass: 'p-button-danger',
-        accept: () => {
-          console.log(row.id)
-          this.players.splice(this.players.findIndex(item => item.id === row.id), 1)
-          this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Player removed', life: 3000 });
-        },
-        reject: () => {}
-      });
-    },
-    search: function(event) {
-      this.suggestedPlayers = [...Array(this.getRandomInteger(1, 10)).keys()].map((item) => {
-        return {
-          id: `${event.query}-${item}-${this.getRandomInteger(1,1000)}}`,
-          'name': event.query.replace(/\b\w/g, char => char.toUpperCase()),
-          'code': 'BA',
-          'age': this.getRandomInteger(17, 35),
-        }
-      });
-    },
-    addPlayer: function() {
-      this.players.push(this.playerToAdd);
-      this.isAddPlayerDialogOpen = false;
-    },
-    getRandomInteger: function (min, max) {
-      min = Math.ceil(min);
-      max = Math.floor(max);
-      return Math.floor(Math.random() * (max - min + 1)) + min;
     },
   }
 }

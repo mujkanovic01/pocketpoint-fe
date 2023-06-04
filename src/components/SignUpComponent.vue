@@ -94,7 +94,7 @@ export default {
         'country': this.selectedCountry,
         'date': this.date
       }))
-      this.$emit('handleSignUp');
+      this.$router.push('/create-tournament')
     },
     openSignIn(){
       this.$emit('openSignIn')

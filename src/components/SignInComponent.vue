@@ -21,7 +21,7 @@
         <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
       </div>
       <div class="flex justify-content-center">
-        <Button label="Sign In" icon="pi pi-user" class="w-6"></Button>
+        <Button label="Sign In" icon="pi pi-user" class="w-6" @click="openCreateTournament()"></Button>
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@ export default {
     openSignUp() {
       this.$emit('openSignUp');
     },
-    handleSignIn(){
-      this.$router.push('/signin')
+    openCreateTournament(){
+      this.$router.push('/create-tournament')
     }
   }
 }

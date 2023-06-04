@@ -53,7 +53,7 @@
       </Column>
       <Column field="icon" header="">
         <template #body>
-          <i class="pi pi-angle-right"></i>
+          <i class="pi pi-angle-right" @click="openTournament()"></i>
         </template>
       </Column>
     </DataTable>
@@ -105,13 +105,8 @@ export default {
     }
   },
   methods: {
-    openSigninComponent: function () {
-      this.isSignUpVisible = false;
-      this.isSignInVisible = true;
-    },
-    openSignupComponent: function () {
-      this.isSignUpVisible = true;
-      this.isSignInVisible = false;
+    openTournament: function () {
+      this.$router.push('/tournament?id=1')
     }
   }
 }
