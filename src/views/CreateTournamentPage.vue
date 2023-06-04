@@ -60,7 +60,7 @@
         <div class="flex justify-content-center">
           <Toast />
           <ConfirmPopup></ConfirmPopup>
-          <DataTable :value="players" class="w-8">
+          <DataTable :value="players" class="w-12 lg:w-8">
             <template #header>
               <div class="flex flex-wrap align-items-center justify-content-between gap-2">
                 <span class="text-xl text-900 font-bold">Players</span>
@@ -110,6 +110,7 @@
 <script>
 import players from "@/data/players";
 import Flag from "@/components/Flag.vue";
+
 export default {
   name: 'TournamentPage',
   components: {
