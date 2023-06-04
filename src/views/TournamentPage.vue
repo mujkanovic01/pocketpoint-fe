@@ -6,7 +6,7 @@
           <img alt="logo" src="../assets/logo-nobg.png" height="65" class="mr-2" />
         </template>
         <template #end>
-          <Button pButton pRipple label="Sign in" type="button" class="p-button-outlined" @click="openSigninComponent()"></Button>
+          <Button pRipple label="Sign in" type="button" class="p-button-outlined" @click="openSigninComponent()"></Button>
         </template>
       </Menubar>
     </div>
@@ -116,33 +116,28 @@ export default {
     Flag
   },
   data: function () {
+    const tournamentId = this.$route.query.id;
+    const tournaments = JSON.parse(localStorage.getItem('tournaments'));
+    const tournamentData = tournaments[tournamentId];
+    console.log(tournamentData)
     return {
-      visible: false,
-      isSignInVisible: false,
-      isSignUpVisible: false,
-      title: null,
-      datetime: null,
-      discipline: null,
-      raceTo: null,
-      clubName: null,
-      disciplinesOptions: [{'name': '8 ball'}, {'name': '9 ball'}, {'name': '10 ball'}, {'name': 'Snooker'}],
-      playerNumOptions: [{'name': 32}],
-      playerNum: null,
-      players: Object.values(players).slice(0, 32),
-      playerToAdd: null,
-      suggestedPlayers: [],
-      isAddPlayerDialogOpen: false,
+      title: tournamentData.title,
+      datetime: tournamentData.datetime,
+      discipline: tournamentData.discipline.name,
+      raceTo: tournamentData.raceTo,
+      clubName: tournamentData.clubName,
+      players: tournamentData.players,
       menubarItems: [
         { separator: true },
         {
           label: 'Home',
           icon: 'pi pi-fw pi-home',
-          class: "p-focus",
-          url: '/',
+          url: '/'
         },
         {
           label: 'Tournaments',
           icon: 'pi pi-fw pi-sitemap',
+          class: "p-focus",
           url: '/tournaments',
         },
         {
@@ -155,6 +150,15 @@ export default {
     }
   },
   methods: {
+    openSigninComponent: function () {
+      this.isSignUpVisible = false;
+      this.isSignInVisible  = true;
+    },
+    openSignupComponent: function () {
+      console.log('ae');
+      this.isSignUpVisible  = true;
+      this.isSignInVisible = false;
+    },
     deletePlayer: function (event, row) {
       this.$confirm.require({
         target: event.currentTarget,
@@ -162,6 +166,7 @@ export default {
         icon: 'pi pi-info-circle',
         acceptClass: 'p-button-danger',
         accept: () => {
+          console.log(row.id)
           this.players.splice(this.players.findIndex(item => item.id === row.id), 1)
           this.$toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Player removed', life: 3000 });
         },
@@ -187,25 +192,6 @@ export default {
       max = Math.floor(max);
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
-    createTournament: function () {
-      const tournaments = JSON.parse(localStorage.getItem("tournaments") || "{}");
-
-      const tournamentIds = Object.keys(tournaments).map(i => Number(i));
-      const maxId = tournamentIds.length > 0 ? Math.max(...tournamentIds) : 0;
-      const nextId = maxId + 1;
-      const newTournament = {
-        'title': this.title,
-        'datetime': this.datetime,
-        'discipline': this.discipline,
-        'raceTo': this.raceTo,
-        'clubName': this.clubName,
-        'numberOfPlayers': this.playerNum,
-        'players': this.players,
-      }
-      tournaments[nextId] = newTournament
-      localStorage.setItem('tournaments', JSON.stringify(tournaments));
-      this.$router.push(`/tournament?id=${nextId}`)
-    }
   }
 }
 </script>

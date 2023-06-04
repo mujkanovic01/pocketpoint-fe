@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-nogutter surface-section text-800">
     <div class="col-12 relative">
-      <Menubar :model="items">
+      <Menubar :model="menubarItems">
         <template #start>
           <img alt="logo" src="../assets/logo-nobg.png" height="65" class="mr-2" />
         </template>
@@ -48,7 +48,7 @@
         visible: false,
         isSignInVisible: false,
         isSignUpVisible: false,
-        items: [
+        menubarItems: [
           { separator: true },
           {
             label: 'Home',
@@ -68,7 +68,6 @@
             url: '/leaderboard'
           },
           { separator: true },
-
         ]
       }
     },

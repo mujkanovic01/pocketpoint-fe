@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 // import SignUp from '../views/SignUpPage';
 import LandingPage from '../views/LandingPage.vue';
 import CreateTournamentPage from "@/views/CreateTournamentPage.vue";
+import TournamentPage from "@/views/TournamentPage.vue";
 
 const routes = [
   {
@@ -21,6 +22,10 @@ const routes = [
     component: () => import('../views/TournamentsPage.vue')
   }
 
+  {
+    path: '/tournament',
+    component: TournamentPage
+  },
 ];
 
 const router = createRouter({

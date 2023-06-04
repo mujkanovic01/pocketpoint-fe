@@ -21,11 +21,18 @@ import Column from 'primevue/column';
 import DataView from "primevue/dataview";
 import Knob from "primevue/knob";
 import Avatar from "primevue/avatar";
+import ConfirmPopup from 'primevue/confirmpopup';
+import Toast from "primevue/toast";
+import ConfirmationService from 'primevue/confirmationservice';
+import ToastService from 'primevue/toastservice';
+import AutoComplete from "primevue/autocomplete";
 import AvatarGroup from "primevue/avatargroup";
 
 const app = createApp(App);
 app.use(PrimeVue, { ripple: true });
 app.use(router); // Use the router
+app.use(ConfirmationService);
+app.use(ToastService);
 app.component('Button', Button);
 app.component('Checkbox', Checkbox);
 app.component('Card', Card);
@@ -41,6 +48,9 @@ app.component('InputNumber', InputNumber);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Avatar', Avatar);
+app.component('Toast', Toast);
+app.component('ConfirmPopup', ConfirmPopup);
+app.component('AutoComplete', AutoComplete);
 app.component('AvatarGroup', AvatarGroup);
 
 app.mount('#app');
