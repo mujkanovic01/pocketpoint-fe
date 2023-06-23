@@ -1,13 +1,6 @@
 <template>
   <div class="flex flex-column align-items-center text-800">
-    <div class="col-12 relative">
-      <Menubar :model="items">
-        <template #start>
-          <img alt="logo" src="../assets/logo-nobg.png" height="65" class="mr-2"/>
-        </template>
-        <!--        TODO insert player info-->
-      </Menubar>
-    </div>
+    <NavigationBar page="tournaments"/>
 
     <div class="text-5xl ml-4 my-4">Tournaments</div>
 
@@ -38,13 +31,17 @@
       <Column field="name" header="Players">
         <template #body="slotProps">
           <AvatarGroup>
-            <Avatar :label="slotProps.data.players[0].name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2 p-3"
+            <Avatar :label="slotProps.data.players[0].name.split(' ').map(word => word.charAt(0)).join('')"
+                    class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[1].name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2 p-3"
+            <Avatar :label="slotProps.data.players[1].name.split(' ').map(word => word.charAt(0)).join('')"
+                    class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[2].name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2 p-3"
+            <Avatar :label="slotProps.data.players[2].name.split(' ').map(word => word.charAt(0)).join('')"
+                    class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[3].name.split(' ').map(word => word.charAt(0)).join('')" class="mr-2 p-3"
+            <Avatar :label="slotProps.data.players[3].name.split(' ').map(word => word.charAt(0)).join('')"
+                    class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
             <Avatar :label="`+${(slotProps.data.players.length - 4)}`" class="mr-2 p-3"
                     shape="circle" size="medium"/>
@@ -66,6 +63,7 @@
 import Flag from "@/components/Flag.vue";
 import tournaments from "@/data/tournaments";
 import players from "@/data/players";
+import NavigationBar from "@/components/NavigationBar.vue";
 
 export default {
   name: 'LeaderboardPage',
@@ -74,34 +72,14 @@ export default {
       return players
     }
   },
-  components: {Flag},
+  components: {NavigationBar, Flag},
   data: function () {
     return {
-      tournaments: Object.values(tournaments).map(tournament => ({...tournament,
-          players: tournament.players.map(player => players[player]),
-        }
+      tournaments: Object.values(tournaments).map(tournament => ({
+            ...tournament,
+            players: tournament.players.map(player => players[player]),
+          }
       )),
-      items: [
-        {separator: true},
-        {
-          label: 'Home',
-          icon: 'pi pi-fw pi-home',
-          url: '/',
-        },
-        {
-          label: 'Tournaments',
-          icon: 'pi pi-fw pi-sitemap',
-          class: "p-focus",
-          url: '/tournaments'
-        },
-        {
-          label: 'Leaderboards',
-          icon: 'pi pi-fw pi-chart-bar',
-          url: '/leaderboard'
-        },
-        {separator: true},
-
-      ]
     }
   },
   methods: {
