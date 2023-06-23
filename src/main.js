@@ -28,6 +28,8 @@ import ToastService from 'primevue/toastservice';
 import AutoComplete from "primevue/autocomplete";
 import AvatarGroup from "primevue/avatargroup";
 import Menu from "primevue/menu";
+import Sidebar from 'primevue/sidebar';
+
 import 'stream-browserify';
 
 const app = createApp(App);
@@ -55,5 +57,6 @@ app.component('ConfirmPopup', ConfirmPopup);
 app.component('AutoComplete', AutoComplete);
 app.component('AvatarGroup', AvatarGroup);
 app.component('Menu', Menu);
+app.component('Sidebar', Sidebar);
 
 app.mount('#app');

@@ -1,6 +1,5 @@
 <template>
   <div class="grid-nogutter surface-section text-800" style="height: 100vh">
-    <NavigationBar page="tournaments"/>
     <div class="surface-section w-full p-6">
       <div class="font-medium text-3xl text-900 mb-3">Host a tournament</div>
       <div class="text-500 mb-5">Please provide some basic information about your tournament</div>
