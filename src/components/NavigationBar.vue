@@ -93,7 +93,13 @@ export default {
             this.$router.push('/dashboard');
           }
         },
-        {label: 'Profile', icon: 'pi pi-fw pi-user'},
+        {
+	  label: 'Profile', 
+	  icon: 'pi pi-fw pi-user', 
+          command: () => {
+            this.$router.push('/profile');
+          }
+	},
         {separator: true}
       ],
       isSignInVisible: false,
