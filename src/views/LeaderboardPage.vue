@@ -1,14 +1,6 @@
 <template>
   <div class="flex flex-column align-items-center text-800">
-    <div class="col-12 relative">
-      <Menubar :model="items">
-        <template #start>
-          <img alt="logo" src="../assets/logo-nobg.png" height="65" class="mr-2"/>
-        </template>
-        <!--        TODO insert player info-->
-      </Menubar>
-    </div>
-
+    <NavigationBar page="leaderboards"/>
     <div class="text-5xl ml-4 my-4">Leaderboard</div>
 
     <DataTable :value="players" class="lg:w-8 w-12">
@@ -37,12 +29,6 @@
           </div>
         </template>
       </Column>
-      <Column field="icon" header="">
-        <template #body>
-          <i class="pi pi-angle-right"></i>
-        </template>
-      </Column>
-      <!--          <Column field="quantity" header="Quantity"></Column>-->
     </DataTable>
 
   </div>
@@ -52,51 +38,20 @@
 
 import players from "@/data/players";
 import Flag from "@/components/Flag.vue";
+import NavigationBar from "@/components/NavigationBar.vue";
 
 export default {
   name: 'LeaderboardPage',
-  components: {Flag},
+  components: {NavigationBar, Flag},
   data: function () {
     const sortedPlayers = Object.values(players)
     sortedPlayers.sort((a, b) => {
       return b.winPercentage - a.winPercentage;
     })
-
     return {
       players: sortedPlayers,
-      items: [
-        {separator: true},
-        {
-          label: 'Home',
-          icon: 'pi pi-fw pi-home',
-          url: '/',
-        },
-        {
-          label: 'Tournaments',
-          icon: 'pi pi-fw pi-sitemap',
-          url: '/tournaments'
-        },
-        {
-          label: 'Leaderboards',
-          icon: 'pi pi-fw pi-chart-bar',
-          class: "p-focus",
-          url: '/leaderboard'
-        },
-        {separator: true},
-
-      ]
     }
   },
-  methods: {
-    openSigninComponent: function () {
-      this.isSignUpVisible = false;
-      this.isSignInVisible = true;
-    },
-    openSignupComponent: function () {
-      this.isSignUpVisible = true;
-      this.isSignInVisible = false;
-    }
-  }
 }
 </script>
 

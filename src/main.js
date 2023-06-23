@@ -1,10 +1,10 @@
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import App from './App.vue';
 import router from './router';
 import PrimeVue from 'primevue/config';
 import './main.css';
-import "primevue/resources/themes/soho-dark/theme.css";
-import "primevue/resources/themes/soho-dark/theme.css";
+import "primevue/resources/themes/soho-light/theme.css";
+import "primevue/resources/themes/soho-light/theme.css";
 import "primevue/resources/primevue.min.css";
 import Card from 'primevue/card';
 import InputText from 'primevue/inputtext';
@@ -27,9 +27,11 @@ import ConfirmationService from 'primevue/confirmationservice';
 import ToastService from 'primevue/toastservice';
 import AutoComplete from "primevue/autocomplete";
 import AvatarGroup from "primevue/avatargroup";
+import Menu from "primevue/menu";
+import 'stream-browserify';
 
 const app = createApp(App);
-app.use(PrimeVue, { ripple: true });
+app.use(PrimeVue, {ripple: true});
 app.use(router); // Use the router
 app.use(ConfirmationService);
 app.use(ToastService);
@@ -52,5 +54,6 @@ app.component('Toast', Toast);
 app.component('ConfirmPopup', ConfirmPopup);
 app.component('AutoComplete', AutoComplete);
 app.component('AvatarGroup', AvatarGroup);
+app.component('Menu', Menu);
 
 app.mount('#app');
