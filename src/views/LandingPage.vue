@@ -9,7 +9,7 @@
           in the region. Become a member and start your journey today.</p>
 
         <Button pButton pRipple label="Host a tournament" type="button" class="mr-3 p-button-raised"
-                @click="openSigninComponent()"></Button>
+                @click="openHostTournamentComponent()"></Button>
       </section>
     </div>
     <div class="col-12 md:col-6 overflow-hidden flex align-items-center justify-content-center image-media">
@@ -30,6 +30,7 @@
 import NavigationBar from "@/components/NavigationBar.vue";
 import SignInComponent from "@/components/SignInComponent.vue";
 import SignUpComponent from "@/components/SignUpComponent.vue";
+import jwtDecode from "jwt-decode";
 
 export default {
   name: 'LandingPage',
@@ -43,6 +44,7 @@ export default {
       visible: false,
       isSignInVisible: false,
       isSignUpVisible: false,
+      isLoggedInUser: false,
     }
   },
   methods: {
@@ -318,6 +320,10 @@ export default {
         localStorage.setItem('tournaments', JSON.stringify(obj))
       }
     },
+    setIsLoggedInUser() {
+      const access_token = localStorage.getItem('access_token');
+      this.isLoggedInUser = access_token ? Boolean(jwtDecode(access_token)?.first_name && jwtDecode(access_token)?.last_name) : false;
+    },
     openSigninComponent: function () {
       this.isSignUpVisible = false;
       this.isSignInVisible = true;
@@ -326,9 +332,19 @@ export default {
       this.isSignUpVisible = true;
       this.isSignInVisible = false;
     },
+
+    openHostTournamentComponent: function (){
+      if(this.isLoggedInUser){
+        this.$router.push("/dashboard")
+      }
+      else {
+        this.openSigninComponent();
+      }
+    }
   },
   mounted() {
     this.setTournaments();
+    this.setIsLoggedInUser();
   }
 }
 </script>

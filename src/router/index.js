@@ -10,7 +10,7 @@ const routes = [
         component: LandingPage
     },
     {
-        path: '/create-tournament',
+        path: '/dashboard',
         component: CreateTournamentPage
     },
     {

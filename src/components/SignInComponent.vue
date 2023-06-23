@@ -74,7 +74,7 @@ export default {
       }
 
       localStorage.setItem('access_token', response.data.access_token);
-      this.$router.push('/create-tournament')
+      this.$router.push('/dashboard')
     },
     loginUser: async function () {
       this.isLoading = true
