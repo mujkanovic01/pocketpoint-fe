@@ -15,18 +15,20 @@
             <div v-if="user">
               <button label="Toggle" @click="toggleProfile"
                       class="w-full p-link flex align-items-center p-2 text-color hover:surface-200 border-noround">
-                <Avatar label="JD" class="mr-2" shape="circle"/>
+                <Avatar
+                    :label="user.name.split(' ')[0].charAt(0).toUpperCase() + user.name.split(' ')[1].charAt(0).toUpperCase()"
+                    class="mr-2" shape="circle"/>
                 <div class="flex flex-column align ml-2">
-                  <span class="font-bold">John Doe</span>
+                  <span class="font-bold">{{ user.name }}</span>
                   <span class="text-sm">Player</span>
                 </div>
               </button>
               <Menu ref="profileMenu" :model="profileItems" :popup="true">
                 <template #end>
-                  <button
-                      class="w-full p-link flex align-items-center p-2 pl-4 text-color hover:surface-200 border-noround">
+                  <button @click="logoutUser"
+                          class="w-full p-link flex align-items-center p-2 pl-4 text-color hover:surface-200 border-noround ml-auto">
                     <i class="pi pi-sign-out"/>
-                    <span class="ml-2" @click="logoutUser">Log Out</span>
+                    <span class="ml-2">Log Out</span>
                   </button>
                 </template>
               </Menu>
@@ -102,7 +104,7 @@ export default {
     openSigninComponent: function () {
       this.isSignUpVisible = false;
       this.isSignInVisible = true;
-      this.$refs.profileMenu.hide();
+      if (this.user) this.$refs.profileMenu.hide();
     },
     openSignupComponent: function () {
       this.isSignUpVisible = true;
@@ -116,16 +118,15 @@ export default {
     },
     logoutUser: function () {
       localStorage.removeItem('access_token');
-      this.user = null;
-      this.$router.push("/");
+      location.reload();
     }
   },
   mounted: function () {
     // Style the navbar correctly
     const element = this.$el.querySelector(".p-menubar-end");
-    element.style.marginLeft = '0px';
+    element.className += ' lg:ml-0';
     const element2 = this.$el.querySelector(".p-menubar");
-    element2.style.justifyContent = 'space-between';
+    element2.className += ' lg:justify-content-between';
 
     const access_token = localStorage.getItem('access_token');
 

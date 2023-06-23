@@ -7,19 +7,19 @@
                class="mr-2 logo-image"
                @click="redirectToHome"/>
           <Divider/>
-          <li>
-            <i class="pi pi-home"/>
-            <span>Home</span>
+          <li @click="() => {this.$router.push('/dashboard')}">
+            <i class="pi pi-box"/>
+            <span>Create a tournament</span>
           </li>
           <Divider/>
-          <li>
+          <li style="cursor: default; color:gray">
             <i class="pi pi-sitemap"/>
-            <span>Tournament</span>
+            <span>Manage leagues</span>
           </li>
           <Divider/>
-          <li>
+          <li style="cursor: default; color:gray">
             <i class="pi pi-chart-bar"/>
-            <span>Leaderboards</span>
+            <span>Manage teams</span>
           </li>
           <Divider/>
         </div>
@@ -27,7 +27,7 @@
           <Divider/>
           <li class="sidebar-menu-bottom" @click="redirectToProfilePage">
             <i class="pi pi-user"/>
-            <span v-if="this.user">{{this.user.name}}</span>
+            <span v-if="this.user">{{ this.user.name }}</span>
           </li>
         </div>
       </ul>
@@ -56,14 +56,17 @@ export default {
     redirectToHome: function () {
       this.$router.push("/");
     },
-    redirectToProfilePage: function (){
+    redirectToProfilePage: function () {
       this.$router.push("/profile");
     }
   },
   mounted: function () {
     const access_token = localStorage.getItem('access_token');
 
-    if (!access_token) return;
+    if (!access_token) {
+      window.location.href = '/';
+      return;
+    }
     const decodedToken = jwtDecode(access_token);
 
     if (decodedToken && decodedToken.first_name && decodedToken.last_name) {

@@ -13,7 +13,9 @@
       </section>
     </div>
     <div class="col-12 md:col-6 overflow-hidden flex align-items-center justify-content-center image-media">
-      <img src="../assets/landing-page-bg.png" alt="Image" class="md:ml-auto block md:h-full"/>
+      <img src="../assets/landing-page-bg.png" alt="Image" class="hidden md:ml-auto md:block"
+           style="height: calc(100vh - 90px)"/>
+      <img src="../assets/landing-page-bg.png" alt="Image" class="block md:ml-auto md:hidden"/>
     </div>
 
     <Dialog v-model:visible="isSignUpVisible" modal header="Sign Up" class="w-11 md:w-8 xl:w-6">
@@ -333,11 +335,10 @@ export default {
       this.isSignInVisible = false;
     },
 
-    openHostTournamentComponent: function (){
-      if(this.isLoggedInUser){
+    openHostTournamentComponent: function () {
+      if (this.isLoggedInUser) {
         this.$router.push("/dashboard")
-      }
-      else {
+      } else {
         this.openSigninComponent();
       }
     }
