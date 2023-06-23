@@ -9,10 +9,7 @@ A live demo of the pocketpoint application can be [viewed here](https://pocket-p
 ## Technology Used
 
 * Vue.js
-* Vue CLI
-* Vuex
-* Vuetify
-* Firebase
+* PrimeVue
 
 ## Project setup
 
