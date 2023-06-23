@@ -3,7 +3,8 @@
     <div class="">
       <Menubar :model="items">
         <template #start>
-          <img alt="logo" style="filter: invert(100%);" src="../assets/logo-nobg.png" height="65" class="mr-2 "/>
+          <img alt="logo" style="filter: invert(100%);" src="../assets/logo-nobg.png" height="65"
+               class="mr-2 logo-image" @click="redirectToHome"/>
         </template>
         <template #end>
           <div>
@@ -25,7 +26,7 @@
                   <button
                       class="w-full p-link flex align-items-center p-2 pl-4 text-color hover:surface-200 border-noround">
                     <i class="pi pi-sign-out"/>
-                    <span class="ml-2">Log Out</span>
+                    <span class="ml-2" @click="logoutUser">Log Out</span>
                   </button>
                 </template>
               </Menu>
@@ -83,7 +84,13 @@ export default {
       ],
       profileItems: [
         {separator: true},
-        {label: 'Dashboard', icon: 'pi pi-fw pi-box'},
+        {
+          label: 'Dashboard',
+          icon: 'pi pi-fw pi-box',
+          command: () => {
+            this.$router.push('/dashboard');
+          }
+        },
         {label: 'Profile', icon: 'pi pi-fw pi-user'},
         {separator: true}
       ],
@@ -95,6 +102,7 @@ export default {
     openSigninComponent: function () {
       this.isSignUpVisible = false;
       this.isSignInVisible = true;
+      this.$refs.profileMenu.hide();
     },
     openSignupComponent: function () {
       this.isSignUpVisible = true;
@@ -103,6 +111,14 @@ export default {
     toggleProfile: function (event) {
       this.$refs.profileMenu.toggle(event);
     },
+    redirectToHome: function () {
+      this.$router.push("/");
+    },
+    logoutUser: function () {
+      localStorage.removeItem('access_token');
+      this.user = null;
+      this.$router.push("/");
+    }
   },
   mounted: function () {
     // Style the navbar correctly
@@ -116,9 +132,7 @@ export default {
     if (!access_token) return;
     const decodedToken = jwtDecode(access_token);
 
-    console.log(decodedToken);
     if (decodedToken && decodedToken.first_name && decodedToken.last_name) {
-      console.log('set user')
       this.user = {
         'id': decodedToken.id,
         'name': decodedToken.first_name + ' ' + decodedToken.last_name,
@@ -128,3 +142,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.logo-image:hover {
+  cursor: pointer;
+}
+</style>
