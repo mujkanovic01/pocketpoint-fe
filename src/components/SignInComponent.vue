@@ -8,24 +8,24 @@
     </div>
 
     <div>
-      <div class="mb-2">
+      <div class="mb-1">
         <label for="email1" class="block text-900 font-medium mb-2">Email</label>
         <InputText v-model="email" id="email1" type="text" :class="{ 'p-invalid': errorMessages.email }"
                    class="w-full"/>
         <small class="p-error" id="text-error">{{ errorMessages.email || '&nbsp;' }}</small>
       </div>
-      <div class="mb-2">
+      <div class="mb-1">
         <label for="password" class="block text-900 font-medium mb-2">Password</label>
         <InputText id="password" v-model="password" :class="{ 'p-invalid': errorMessages.password }" type="password"
                    class="w-full"/>
         <small class="p-error" id="text-error">{{ errorMessages.password || '&nbsp;' }}</small>
       </div>
-      <div class="flex align-items-center justify-content-between mb-6">
+      <div class="flex align-items-center justify-content-between mb-4">
         <div class="flex align-items-center">
           <Checkbox id="checkbox" :binary="true" v-model="checked" disabled class="mr-2"></Checkbox>
           <label for="checkbox">Remember me</label>
         </div>
-        <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+        <p class="font-medium no-underline ml-2 text-blue-500 text-right">Forgot password?</p>
       </div>
       <div class="flex flex-column align-items-center">
         <Button label="Sign In" icon="pi pi-user" class="w-6" @click="handleLogin()"></Button>

@@ -4,7 +4,7 @@
 
     <div class="text-5xl ml-4 my-4">Tournaments</div>
 
-    <DataTable :value="tournaments" class="lg:w-8 w-12">
+    <DataTable :value="tournaments" class="lg:w-8 w-12" @row-click="openTournament">
       <Column field="name" header="Name">
         <template #body="slotProps">
           <div class="text-lg">{{ slotProps.data.title }}</div>
@@ -12,13 +12,7 @@
       </Column>
       <Column field="name" header="Start time">
         <template #body="slotProps">
-          <div class="text-lg">{{ new Date(slotProps.data.startTime).toDateString() }}</div>
-        </template>
-      </Column>
-
-      <Column field="name" header="End time">
-        <template #body="slotProps">
-          <div class="text-lg">{{ new Date(slotProps.data.endTime).toDateString() }}</div>
+          <div class="text-lg">{{ new Date(slotProps.data.datetime).toDateString() }}</div>
         </template>
       </Column>
 
@@ -31,26 +25,26 @@
       <Column field="name" header="Players">
         <template #body="slotProps">
           <AvatarGroup>
-            <Avatar :label="slotProps.data.players[0].name.split(' ').map(word => word.charAt(0)).join('')"
+            <Avatar label="??"
                     class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[1].name.split(' ').map(word => word.charAt(0)).join('')"
+            <Avatar label="??"
                     class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[2].name.split(' ').map(word => word.charAt(0)).join('')"
+            <Avatar label="??"
                     class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="slotProps.data.players[3].name.split(' ').map(word => word.charAt(0)).join('')"
+            <Avatar label="??"
                     class="mr-2 p-3"
                     shape="circle" size="medium" style="background-color:#2196F3; color: #ffffff"/>
-            <Avatar :label="`+${(slotProps.data.players.length - 4)}`" class="mr-2 p-3"
+            <Avatar :label="`+${(slotProps.data.num_of_players - 4)}`" class="mr-2 p-3"
                     shape="circle" size="medium"/>
           </AvatarGroup>
         </template>
       </Column>
       <Column field="icon" header="">
         <template #body>
-          <i class="pi pi-angle-right" @click="openTournament()"></i>
+          <i class="pi pi-angle-right"></i>
         </template>
       </Column>
     </DataTable>
@@ -64,6 +58,7 @@ import Flag from "@/components/Flag.vue";
 import tournaments from "@/data/tournaments";
 import players from "@/data/players";
 import NavigationBar from "@/components/NavigationBar.vue";
+import {api_root} from "@/helpers/constants";
 
 export default {
   name: 'LeaderboardPage',
@@ -83,9 +78,31 @@ export default {
     }
   },
   methods: {
-    openTournament: function () {
-      this.$router.push('/tournament?id=1')
-    }
+    openTournament: function (event) {
+      this.$router.push(`/tournament?id=${this.tournaments[event.index].id}`)
+    },
+    fetchTournamentData: async function () {
+      this.isLoading = true
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      };
+      try {
+        const res = await fetch(api_root + `/tournaments/getAllTournaments`, requestOptions);
+        const responseBody = await res.json();
+        this.isLoading = false
+        this.tournaments = responseBody.data
+      } catch {
+        this.errorMessages['generalError'] = 'Server ran into an issue. Please try again'
+        this.isLoading = false
+        return null;
+      }
+    },
+  },
+  mounted: function () {
+    this.fetchTournamentData();
   }
 }
 </script>

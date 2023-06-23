@@ -63,7 +63,6 @@
           <div class="flex col-4 align-items-center align-content-end justify-content-between py-3 px-2 surface-border">
             <div class="text-500 w-6 font-medium">Club name</div>
             <div class="col-1"/>
-
             <div class="flex flex-column w-full">
               <InputText class="w-full" v-model="clubName" :class="{ 'p-invalid': errorMessages.clubName }"/>
               <small class="p-error" id="text-error">{{ errorMessages.clubName || '&nbsp;' }}</small>
@@ -122,7 +121,7 @@
         <AutoComplete placeholder="Enter player's full name" v-model="playerToAdd" optionLabel="name"
                       :suggestions="suggestedPlayers" @complete="search" forceSelection/>
         <div class="flex col-1"/>
-        <Button icon="pi pi-plus" @click="addPlayer()"/>
+        <Button :disabled="!(playerToAdd && Object.hasOwn(playerToAdd, 'id'))" icon="pi pi-plus" @click="addPlayer()"/>
       </div>
     </Dialog>
   </div>
@@ -132,6 +131,7 @@
 import Flag from "@/components/Flag.vue";
 import NavigationBar from "@/components/NavigationBar.vue";
 import {api_root} from "@/helpers/constants";
+import calculateAge from "@/helpers/helpers";
 
 export default {
   name: 'TournamentPage',
@@ -149,7 +149,7 @@ export default {
       clubName: null,
       errorMessages: {},
       disciplinesOptions: [{'name': '8 ball'}, {'name': '9 ball'}, {'name': '10 ball'}, {'name': 'Snooker'}],
-      playerNumOptions: [{'name': 32}],
+      playerNumOptions: [{'name': 8}, {'name': 16}, {'name': 32}],
       playerNum: null,
       players: [],
       playerToAdd: null,
@@ -201,40 +201,20 @@ export default {
           id: user.id,
           'name': user.first_name + ' ' + user.last_name,
           'code': JSON.parse(user.nationality).code,
-          'age': this.calculateAge(user.date_of_birth),
+          'age': calculateAge(user.date_of_birth),
         }
       }).filter(player => !this.players.some(p => p.id === player.id))
-    },
-    calculateAge: function (birthdate) {
-      const birthdateObj = new Date(birthdate);
-      const currentDate = new Date();
-
-      // Calculate the difference in years
-      let age = currentDate.getFullYear() - birthdateObj.getFullYear();
-
-      // Adjust the age if the current month is before the birth month
-      const currentMonth = currentDate.getMonth();
-      const birthMonth = birthdateObj.getMonth();
-      if (currentMonth < birthMonth) {
-        age--;
-      }
-
-      // Adjust the age if the current month is the same as the birth month, but the current day is before the birth day
-      if (currentMonth === birthMonth && currentDate.getDate() < birthdateObj.getDate()) {
-        age--;
-      }
-
-      return age;
     },
     addPlayer: function () {
       this.players.push(this.playerToAdd);
       this.isAddPlayerDialogOpen = false;
+      this.playerToAdd = null;
     },
     createTournament: async function () {
       if (!this.validateForm()) return;
 
-      // const playerIds = this.players.map(p => p.id);
-      console.log('playerids', playerIds);
+      const playerIds = this.players.map(p => p.id);
+      // console.log('playerids', playerIds);
 
       const requestOptions = {
         method: "POST",
@@ -244,17 +224,20 @@ export default {
         body: JSON.stringify({
           title: this.title,
           datetime: this.datetime,
-          discipline: this.discipline,
-          raceTo: this.raceTo,
-          clubName: this.clubName,
-          playerNum: this.playerNum,
-          players: this.players,
+          discipline: this.discipline.name,
+          race_to: this.raceTo,
+          club_name: this.clubName,
+          num_of_players: this.playerNum.name,
+          players: playerIds,
         })
       };
 
       const res = await fetch(api_root + `/tournaments/createTournament`, requestOptions);
       const responseBody = await res.json();
 
+      if (responseBody.data && responseBody.data.tournament_id) {
+        this.$router.push(`/tournament?id=${responseBody.data.tournament_id}`)
+      }
       console.log(responseBody);
       // const tournaments = JSON.parse(localStorage.getItem("tournaments") || "{}");
       //
